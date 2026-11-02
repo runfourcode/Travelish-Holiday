@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f3ed">
+  <title>Admin dashboard | Travel(e)sh Holidays</title>
+  <link rel="stylesheet" href="/Assets/site.css">
+  <script src="/Assets/admin-dashboard.js" defer></script>
+</head>
+<body class="dashboard-body" data-dashboard-kind="admin">
+  <div class="dashboard-shell">
+    <aside class="dashboard-sidebar">
+      <a class="brand dashboard-brand" href="/" aria-label="Travel(e)sh Holidays home">
+        <span class="brand-mark" aria-hidden="true">TH</span>
+        <span class="brand-copy"><strong>TRAVELESH</strong><small>HOLIDAYS · ADMIN</small></span>
+      </a>
+      <div class="dashboard-account">
+        <span class="dashboard-avatar" id="accountAvatar">A</span>
+        <span><strong id="accountName">Administrator</strong><small id="accountRole">Admin workspace</small></span>
+      </div>
+      <p class="dashboard-nav-label">WORKSPACE</p>
+      <nav class="dashboard-nav" aria-label="Dashboard sections">
+        <button class="dashboard-nav-item active" type="button" data-section-target="overview"><span>◫</span> Overview</button>
+        <button class="dashboard-nav-item" type="button" data-section-target="bookings"><span>↗</span> Bookings <b id="navBookingCount">0</b></button>
+        <button class="dashboard-nav-item" type="button" data-section-target="clients"><span>♙</span> Clients</button>
+        <button class="dashboard-nav-item" type="button" data-section-target="documents"><span>▤</span> Documents <b id="navDocumentCount">0</b></button>
+        <button class="dashboard-nav-item" type="button" data-section-target="team"><span>♧</span> Team access</button>
+      </nav>
+      <div class="dashboard-sidebar-bottom">
+        <a class="dashboard-nav-item dashboard-site-link" href="/">↖ <span>View website</span></a>
+        <form action="/auth/logout" method="POST">
+          <input type="hidden" name="returnTo" value="/Admin/login.html">
+          <button class="dashboard-nav-item dashboard-logout" type="submit"><span>⇥</span> Sign out</button>
+        </form>
+      </div>
+    </aside>
+
+    <main class="dashboard-main">
+      <header class="dashboard-topbar">
+        <div><p class="eyebrow">Travel(e)sh operations</p><p class="dashboard-date" id="todayLabel"></p></div>
+        <div class="dashboard-top-actions">
+          <label class="dashboard-search"><span aria-hidden="true">⌕</span><input id="dashboardSearch" type="search" placeholder="Search bookings or clients" aria-label="Search bookings or clients"></label>
+          <button class="button button-secondary dashboard-refresh" type="button" id="refreshDashboard">Refresh</button>
+        </div>
+      </header>
+
+      <div class="dashboard-notice" id="dashboardNotice" role="status" aria-live="polite"></div>
+      <section class="dashboard-panel" data-dashboard-panel="overview">
+        <div class="dashboard-page-heading">
+          <div><p class="eyebrow">Your day, at a glance</p><h1>Overview</h1><p>Keep every journey moving, from first request to final handover.</p></div>
+          <button class="button" type="button" data-open-section="bookings">Review bookings <span aria-hidden="true">↗</span></button>
+        </div>
+        <div class="dashboard-stat-grid">
+          <article class="dashboard-stat"><span class="dashboard-stat-icon">↗</span><span class="dashboard-stat-label">Total bookings</span><strong id="statBookings">—</strong><small>All requests received</small></article>
+          <article class="dashboard-stat"><span class="dashboard-stat-icon warm">◷</span><span class="dashboard-stat-label">Awaiting action</span><strong id="statPending">—</strong><small>Need a booking update</small></article>
+          <article class="dashboard-stat"><span class="dashboard-stat-icon green">♙</span><span class="dashboard-stat-label">Client accounts</span><strong id="statClients">—</strong><small>Registered clients</small></article>
+          <article class="dashboard-stat"><span class="dashboard-stat-icon blue">▤</span><span class="dashboard-stat-label">Document reviews</span><strong id="statDocuments">—</strong><small>Waiting for your review</small></article>
+        </div>
+        <div class="dashboard-content-grid">
+          <article class="dashboard-card">
+            <div class="dashboard-card-heading"><div><p class="eyebrow">The latest</p><h2>Recent bookings</h2></div><button class="dashboard-text-button" type="button" data-open-section="bookings">View all ↗</button></div>
+            <div class="dashboard-table-wrap"><table class="dashboard-table"><thead><tr><th>CLIENT / REQUEST</th><th>PICKUP</th><th>STATUS</th></tr></thead><tbody id="overviewBookingRows"></tbody></table></div>
+            <p class="dashboard-empty" id="overviewBookingsEmpty" hidden>No booking requests yet. New requests will appear here.</p>
+          </article>
+          <article class="dashboard-card">
+            <div class="dashboard-card-heading"><div><p class="eyebrow">Request pipeline</p><h2>Booking status</h2></div></div>
+            <div class="dashboard-status-list" id="bookingStatusSummary"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="dashboard-panel" data-dashboard-panel="bookings" hidden>
+        <div class="dashboard-page-heading"><div><p class="eyebrow">Every journey, in one place</p><h1>Bookings</h1><p>Review trip details and keep clients up to date.</p></div>
+          <label class="dashboard-filter">Status <select id="bookingStatusFilter"><option value="all">All bookings</option><option value="pending">Pending</option><option value="confirmed">Confirmed</option><option value="completed">Completed</option><option value="cancelled">Cancelled</option></select></label>
+        </div>
+        <article class="dashboard-card">
+          <div class="dashboard-table-wrap"><table class="dashboard-table"><thead><tr><th>BOOKING / CLIENT</th><th>VEHICLE</th><th>PICKUP & ROUTE</th><th>STATUS</th></tr></thead><tbody id="bookingRows"></tbody></table></div>
+          <p class="dashboard-empty" id="bookingsEmpty" hidden>No bookings match this view.</p>
+        </article>
+      </section>
+
+      <section class="dashboard-panel" data-dashboard-panel="clients" hidden>
+        <div class="dashboard-page-heading"><div><p class="eyebrow">People who travel with us</p><h1>Clients</h1><p>Client accounts and the bookings linked to each one.</p></div></div>
+        <article class="dashboard-card"><div class="dashboard-table-wrap"><table class="dashboard-table"><thead><tr><th>CLIENT</th><th>EMAIL</th><th>BOOKINGS</th><th>JOINED</th></tr></thead><tbody id="clientRows"></tbody></table></div><p class="dashboard-empty" id="clientsEmpty" hidden>No client accounts yet.</p></article>
+      </section>
+
+      <section class="dashboard-panel" data-dashboard-panel="documents" hidden>
+        <div class="dashboard-page-heading"><div><p class="eyebrow">Private and protected</p><h1>Document reviews</h1><p>Review submitted verification details. Document numbers are masked.</p></div></div>
+        <div class="dashboard-review-list" id="documentRows"></div>
+        <p class="dashboard-empty dashboard-card" id="documentsEmpty" hidden>No documents have been submitted for review.</p>
+      </section>
+
+      <section class="dashboard-panel" data-dashboard-panel="team" hidden>
+        <div class="dashboard-page-heading"><div><p class="eyebrow">People behind every trip</p><h1>Team access</h1><p>Admins and super-admins have the same workspace permissions.</p></div></div>
+        <div class="dashboard-content-grid team-grid">
+          <article class="dashboard-card">
+            <div class="dashboard-card-heading"><div><p class="eyebrow">Add a teammate</p><h2>Create team account</h2></div></div>
+            <form class="dashboard-form" id="staffForm">
+              <label>Full name<input name="name" autocomplete="name" minlength="2" maxlength="120" required></label>
+              <label>Email address<input name="email" type="email" autocomplete="email" required></label>
+              <label>Account type<select name="accountType" required><option value="admin">Admin</option><option value="super_admin">Super-admin</option></select></label>
+              <label>Password <span class="dashboard-field-hint">(at least 12 characters)</span><input name="password" type="password" minlength="12" maxlength="256" autocomplete="new-password" required></label>
+              <label>Confirm password<input name="confirmPassword" type="password" minlength="12" maxlength="256" autocomplete="new-password" required></label>
+              <button class="button" type="submit">Create account <span aria-hidden="true">↗</span></button>
+            </form>
+          </article>
+          <article class="dashboard-card">
+            <div class="dashboard-card-heading"><div><p class="eyebrow">Workspace access</p><h2>Team members</h2></div></div>
+            <div class="dashboard-team-list" id="staffRows"></div>
+            <p class="dashboard-empty" id="staffEmpty" hidden>No team accounts found.</p>
+          </article>
+        </div>
+      </section>
+      <footer class="dashboard-footer">Travel(e)sh Holidays <span>·</span> A smoother journey, together.</footer>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f3ed">
+  <title>My trips | Travel(e)sh Holidays</title>
+  <link rel="stylesheet" href="/Assets/site.css">
+  <script src="/Assets/client-dashboard.js" defer></script>
+</head>
+<body class="dashboard-body client-dashboard-body">
+  <div class="dashboard-shell">
+    <aside class="dashboard-sidebar client-sidebar">
+      <a class="brand dashboard-brand" href="/" aria-label="Travel(e)sh Holidays home"><span class="brand-mark" aria-hidden="true">TH</span><span class="brand-copy"><strong>TRAVELESH</strong><small>HOLIDAYS · YOUR TRIPS</small></span></a>
+      <div class="dashboard-account"><span class="dashboard-avatar" id="clientAvatar">T</span><span><strong id="clientName">Your account</strong><small>Travel(e)sh client</small></span></div>
+      <p class="dashboard-nav-label">YOUR SPACE</p>
+      <nav class="dashboard-nav" aria-label="Dashboard sections">
+        <button class="dashboard-nav-item active" type="button" data-client-section="overview"><span>◫</span> Overview</button>
+        <button class="dashboard-nav-item" type="button" data-client-section="trips"><span>↗</span> My bookings <b id="clientNavBookingCount">0</b></button>
+        <button class="dashboard-nav-item" type="button" data-client-section="documents"><span>▤</span> Documents</button>
+      </nav>
+      <div class="dashboard-sidebar-bottom"><a class="dashboard-nav-item dashboard-site-link" href="/Index.html#booking">＋ <span>Request a car</span></a><form action="/auth/logout" method="POST"><input type="hidden" name="returnTo" value="/Client/login.html"><button class="dashboard-nav-item dashboard-logout" type="submit"><span>⇥</span> Sign out</button></form></div>
+    </aside>
+    <main class="dashboard-main">
+      <header class="dashboard-topbar"><div><p class="eyebrow">Your Travel(e)sh account</p><p class="dashboard-date" id="clientTodayLabel"></p></div><a class="button dashboard-request-button" href="/Index.html#booking">Request a car <span aria-hidden="true">↗</span></a></header>
+      <div class="dashboard-notice" id="clientNotice" role="status" aria-live="polite"></div>
+      <section class="dashboard-panel" data-client-panel="overview">
+        <div class="dashboard-page-heading client-welcome"><div><p class="eyebrow">A smoother journey starts here</p><h1>Welcome, <span id="welcomeName">traveller</span>.</h1><p>Your trip requests and their latest updates, all in one place.</p></div></div>
+        <div class="dashboard-stat-grid client-stat-grid">
+          <article class="dashboard-stat"><span class="dashboard-stat-icon">↗</span><span class="dashboard-stat-label">Total requests</span><strong id="clientStatTotal">—</strong><small>Your booking history</small></article>
+          <article class="dashboard-stat"><span class="dashboard-stat-icon warm">◷</span><span class="dashboard-stat-label">In progress</span><strong id="clientStatActive">—</strong><small>Pending or confirmed</small></article>
+          <article class="dashboard-stat"><span class="dashboard-stat-icon green">✓</span><span class="dashboard-stat-label">Completed trips</span><strong id="clientStatCompleted">—</strong><small>Journeys with us</small></article>
+        </div>
+        <article class="dashboard-card client-next-trip">
+          <div class="dashboard-card-heading"><div><p class="eyebrow">Your latest request</p><h2 id="latestBookingTitle">Ready when you are</h2></div></div>
+          <div id="latestBooking" class="client-latest-content"><p>Your booking requests will appear here after you send one.</p><a class="button" href="/Index.html#booking">Plan a journey <span aria-hidden="true">↗</span></a></div>
+        </article>
+      </section>
+      <section class="dashboard-panel" data-client-panel="trips" hidden>
+        <div class="dashboard-page-heading"><div><p class="eyebrow">From request to road trip</p><h1>My bookings</h1><p>Check your pickup details and the latest status of each request.</p></div><a class="button" href="/Index.html#booking">New request <span aria-hidden="true">↗</span></a></div>
+        <div class="client-booking-list" id="clientBookingRows"></div>
+        <p class="dashboard-empty dashboard-card" id="clientBookingsEmpty" hidden>No bookings yet. Your next trip can start whenever you're ready.</p>
+      </section>
+      <section class="dashboard-panel" data-client-panel="documents" hidden>
+        <div class="dashboard-page-heading"><div><p class="eyebrow">Your verification updates</p><h1>Documents</h1><p>Review the status of documents submitted for your bookings.</p></div></div>
+        <div class="client-document-list" id="clientDocumentRows"></div>
+        <p class="dashboard-empty dashboard-card" id="clientDocumentsEmpty" hidden>No verification documents have been submitted.</p>
+      </section>
+      <footer class="dashboard-footer">Need a hand? <a href="tel:+917428149126">Contact Travel(e)sh Holidays</a></footer>
+    </main>
+  </div>
+</body>
+</html>

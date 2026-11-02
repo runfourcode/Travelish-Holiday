@@ -1,0 +1,16 @@
+{
+  "name": "travlish",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Travlish car rental site backed by Supabase Postgres",
+  "scripts": {
+    "start": "node server.js",
+    "migrate:supabase": "node scripts/migrate-sqlite-to-supabase.js"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "dependencies": {
+    "pg": "8.23.1"
+  }
+}

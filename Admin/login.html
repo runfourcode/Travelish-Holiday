@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f3ed">
+  <title>Admin sign in | Travel(e)sh Holidays</title>
+  <link rel="stylesheet" href="/Assets/site.css">
+</head>
+<body>
+  <main class="auth-page">
+    <section class="auth-visual">
+      <a class="brand auth-brand" href="/" aria-label="Travel(e)sh Holidays home"><span class="brand-mark" aria-hidden="true">TH</span><span class="brand-copy"><strong>TRAVELESH HOLIDAYS</strong><small>Every journey, elevated</small></span></a>
+      <div class="auth-copy">
+        <span class="eyebrow">The people behind every trip</span>
+        <h1 class="display-title">Keep good<br>journeys <em>moving.</em></h1>
+        <p>A considered space for the Travel(e)sh Holidays team to look after every request.</p>
+      </div>
+      <span class="auth-foot">Delhi Cantt. · Travel(e)sh Holidays</span>
+    </section>
+    <section class="auth-form-wrap" aria-labelledby="admin-title">
+      <span class="eyebrow">Team access</span>
+      <h2 id="admin-title">Welcome back.</h2>
+      <p class="auth-intro">Sign in with your administrator account.</p>
+      <div class="auth-alert" id="authAlert" role="alert" aria-live="polite"></div>
+      <form id="adminLoginForm" action="/admin/auth/login" method="POST">
+        <div class="auth-fields">
+          <div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" placeholder="you@company.com" autocomplete="username" autocapitalize="none" spellcheck="false" required></div>
+          <div class="field"><label for="password">Password</label><div class="password-wrap"><input id="password" name="password" type="password" placeholder="Your password" autocomplete="current-password" required><button class="password-toggle" type="button" data-password-toggle="password" aria-label="Show password" aria-pressed="false">Show</button></div></div>
+          <label class="remember-row"><input type="checkbox" name="remember" value="1"> Keep me signed in for 7 days</label>
+        </div>
+        <button class="button auth-submit" id="submitButton" type="submit">Sign in to workspace <span aria-hidden="true">↗</span></button>
+      </form>
+      <a class="auth-home" href="/">← Back to the website</a>
+    </section>
+  </main>
+  <script>
+    const alertBox = document.getElementById("authAlert");
+    const message = new URLSearchParams(location.search).get("error");
+    if (message) {
+      alertBox.textContent = message;
+      alertBox.classList.add("visible");
+    }
+    document.querySelectorAll("[data-password-toggle]").forEach(toggle => {
+      toggle.addEventListener("click", () => {
+        const field = document.getElementById(toggle.dataset.passwordToggle);
+        const show = field.type === "password";
+        field.type = show ? "text" : "password";
+        toggle.textContent = show ? "Hide" : "Show";
+        toggle.setAttribute("aria-label", show ? "Hide password" : "Show password");
+        toggle.setAttribute("aria-pressed", String(show));
+      });
+    });
+    document.getElementById("adminLoginForm").addEventListener("submit", event => {
+      if (!event.currentTarget.reportValidity()) {
+        event.preventDefault();
+        return;
+      }
+      const button = document.getElementById("submitButton");
+      button.disabled = true;
+      button.firstChild.textContent = "Signing in… ";
+    });
+  </script>
+</body>
+</html>
